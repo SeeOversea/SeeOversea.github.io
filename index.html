@@ -1,0 +1,224 @@
+<!DOCTYPE html5>
+<html lang="zh-TW">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>See OverSea</title>
+  <link rel="stylesheet" href="./static/css/jsvectormap.css">
+  <link rel="stylesheet" href="./static/css/style.css">
+  <link rel="stylesheet" href="./static/css/CalendarPicker.style.css">
+  <script src="./static/js/jsvectormap.js"></script>
+  <script src="./static/js/world.js"></script>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="./static/css/bootstrap.min.css">
+  <script src="./static/js/jquery.min.js"></script>
+  <script src="./static/js/bootstrap.min.js"></script>
+</head>
+
+<body aria-hidden="false">
+
+  <div id="top" class="top">
+    <!--trending news標題-->
+
+    <img id="title" src="./static/image/title.png" alt="標題圖片" onclick="refreshPage()">
+
+
+    <!--關於我們按鈕-->
+
+    <!--<input id="about_us" type="button" onclick="about_us()" style="background-image:url('./static/image/about_us.jpg');
+    ">-->
+    <input id="about_us" type="button" data-toggle="modal" data-target="#myModal1"
+      style="background-image:url('./static/image/about_us.jpg');">
+
+
+    <!--使用說明按鈕-->
+
+    <input id="FAQ" type="button" data-toggle="modal" data-target="#myModal2"
+      style="background-image:url('./static/image/FAQ.png');">
+
+
+    <!--請輸入文字框-->
+
+    <input id="searchField" type="text" placeholder="   請輸入...">
+
+
+    <!--放大鏡搜尋-->
+
+    <img id="searchButton" src="./static/image/search.png" alt="放大鏡搜尋" onclick="doSearch()">
+
+
+    <!--下拉式按鈕選擇語言-->
+    <select id="language" onchange="changeLanguage(this)">
+      <option value="zh-TW">語言選擇</option>
+      <option value="zh-TW">繁體中文</option>
+      <option value="en">English</option>
+      <option value="ja">日本語</option>
+      <option value="ko">한국어</option>
+      <option value="de">Deutsch</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+      <option value="pt">Português</option>
+      <option value="vi">Tiếng Việt</option>
+      <option value="th">ไทย</option>
+    </select>
+
+    <!--有設計的分隔線-->
+    <div>
+      <img id="title_line" src="./static/image/line.png" alt="我是分隔線">
+    </div>
+  </div>
+
+  <!--style="width:1450px;
+    height:555px;
+    margin:20px;-->
+  <div id="map-wrapper" style = "margin:2%;border:1px solid #EEE;" class="jsvmap-container">
+    <!-- 歷史上今天按鈕 -->
+    <input id="calendarButton" type="button" class="btn btn-info btn-md" 
+      style="background-image:url('./static/image/calender.png'); position: relative;" onclick="viewHistory()">
+      <section id="myCalendarWrapper"></section>
+  </div>
+
+
+  <!--以下是比較區域-->
+  <div id="compare_block">
+    <div>
+      <img id="vs" src="./static/image/vs.png" alt="比較">
+    </div>
+
+    <div>
+      <img id="line2" src="./static/image/line2.png" alt="我是分隔線2">
+    </div>
+
+    <div id="compareArea" style="width:100%;height:auto;"></div>
+  </div>
+
+  <!-- Modal(關於我們) -->
+  <div id="myModal1" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog ">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h2 class="modal-title">關於我們</h2>
+        </div>
+        <div class="modal-body">
+          <h5>
+            <font color="#deb887">See OverSea團隊對於地圖國界區分以及新聞來源選擇不帶有任何政治色彩。</font>
+          </h5>
+          <h4>新聞來源</h4>
+          <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQTLCIBaT2Yie80xVhgML_SFRrbgE8jGK9A32gwZoi_TLc9-QE9GUnlHU5YAkZPgcNEQ7fOJ558juze/pubhtml"
+            style="color:#5e86c1;" target="_blank;">點此查看新聞來源</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal(使用說明) -->
+  <div id="myModal2" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h3 class="modal-title">使用說明</h2>
+        </div>
+        <div class="modal-body">
+          <h4>
+            <font color="#00808c">操作說明</font>
+          </h4>
+          <p>先釘選欲查詢的國家再輸入關鍵字搜尋，釘選結果會顯示所選擇國家與關鍵字相關的報導。
+          </p>
+          <hr>
+          <h4>
+            <font color="#00808c">默認搜尋國家</font>
+          </h4>
+          <p>若無釘選國家則以以下八國作為默認搜尋對象：<br>
+            台灣、日本、韓國、中國、俄羅斯、英國、美國、法國。
+          </p>
+          <hr>
+          <h4>
+            <font color="#00808c">歷史上的今天</font>
+          </h4>
+          <p>地圖左上角有日曆按鈕，點擊可觀看過去各國的頭條。<br>
+            註：目前僅有今年8月3日到現在的新聞。
+          </p>
+          <hr>
+          <h4>
+            <font color="#00808c">圖例</font>
+          </h4>
+          <img id="picexplain" src="./static/image/instruction.png" alt="圖例圖片" width="520px" height="250px">
+          <hr>
+          <h4>
+            <font color="#00808c">常見Q&A</font>
+          </h4>
+          <p><b>1. See OverSea在做什麼？怎麼用？</b>
+          <p style="margin-left: 15px;">能夠一個網站快速查詢各國的新聞，並能看出相同議題他國關心的部分。
+            <br>例如：查「安倍晉三」時，台灣新聞著重哀悼會、俄羅斯著重生前政績、法國一篇描述安倍曾高票當選，或許是想表示他生前受到民眾喜愛。
+          </p>
+          </p>
+          <p style="margin-top: 20px;"><b>2. 首頁顯示的新聞怎麼來？</b>
+          <p style="margin-left: 15px;">首頁的新聞為各國新聞來源的頭版，可以看到該國當下關心的事務，每天更新一次。
+          </p>
+          </p>
+          <p style="margin-top: 20px;"><b>3. 新聞來源是怎麼選的？</b>
+          <p style="margin-left: 15px;">以當地發行量高的新聞報紙或收視率高的新聞電視台為主，以能免費顯示文章全文為輔。
+          </p>
+          </p>
+          <p style="margin-top: 20px;"><b>4. 關鍵字查詢如何使用？</b>
+          <p style="margin-left: 15px;">請先選取欲查詢國家，再到右上角輸入想查詢的關鍵字，按下放大鏡，就完成查詢了唷！</p>
+          </p>
+          <p style="margin-top: 20px;"><b>5. 如何變換語言？</b>
+          <p style="margin-left: 15px;">選擇完欲變更語言後，請再搜尋一次關鍵字。</p>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <script src="./static/js/CalendarPicker.js"></script>
+  <script src="./static/js/seeoversea.js"></script>
+
+
+  <script>
+
+    // 如果把這一段markers變數宣告的部分刪除，點選的功能會不見
+    var markers = [];
+
+    var map = new JsVectorMap({
+      map: 'world',
+      selector: '#map-wrapper',
+
+      regionsSelectable: true,
+      markersSelectable: true,
+
+      // -------- Events --------
+      onRegionSelected: function (index, isSelected, selectedRegions) {
+        showComparison(index, isSelected);
+      },
+      onMarkerSelected: function (code, isSelected, selectedMarkers) {
+        console.log(code, isSelected, selectedMarkers);
+      },
+      onRegionTooltipShow: function (tooltip, code) {
+        tooltip.selector.innerHTML = showContent(code);
+      },
+      onMarkerTooltipShow: function (tooltip, index) {
+        tooltip.selector.innerHTML = '<h5 class="mb-0">' + tooltip.text() + '</h5>' + '<p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p><small class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.</small>';
+      },
+    })
+
+    $(document).ready(function () {
+      $("#about_us").click(function () {
+        $("#myModal").modal({ backdrop: "static" });
+      });
+    });
+
+  </script>
+
+</body>
+
+</html>
